@@ -6,20 +6,23 @@ function CountriesList() {
 
     const [country, setCountry] = useState([])
 
-    // const [filteredCountry, setFilteredCountry] = useState(country)
+    const [filteredCountry, setFilteredCountry] = useState([])
 
-    // const newSearch = (event) => {
-    //     const matchArray = country.filter(e => {
-    //         return e.name.official.toLowerCase().includes(event.target.value.toLowerCase()) || e.alpha3Code.toLowerCase().includes(event.target.value.toLowerCase())
-    //     })
-    //     setFilteredCountry(matchArray)
-    // }
+    const newSearch = (event) => {
+        const matchArray = country.filter(e => {
+            return e.name.official.toLowerCase().includes(event.target.value.toLowerCase()) || e.alpha3Code.toLowerCase().includes(event.target.value.toLowerCase())
+        })
+        setFilteredCountry(matchArray)
+    }
 
 
     useEffect(() => {
         fetch('https://ih-countries-api.herokuapp.com/countries')
             .then(res => res.json())
-            .then(json => setCountry(json))
+            .then(json => {
+                setFilteredCountry(json)
+                setCountry(json)
+            })
             .catch(err => console.log(err))
     }, [])
 
@@ -29,13 +32,13 @@ function CountriesList() {
             maxHeight: '90vh',
             overflow: 'scroll'
         }}>
-            {/* <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '20px' }}>
                 <h2>Search a country</h2>
                 <input type='text' onChange={newSearch} />
-            </div> */}
+            </div>
             <div className="list-group">
                 {
-                    country.map(singleCountry => {
+                    filteredCountry.map(singleCountry => {
                         return (
                             <div>
                                 <ul style={{ listStyle: 'none' }}>
